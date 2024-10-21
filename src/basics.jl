@@ -589,79 +589,26 @@ function rule(point1::Point, point2::Point;
         vertices=vertices)
 end
 
-# we need a thread safe way to store the color palette as a stack:
-#  access to the stack is only possible using the global function:
-#   - predefine all needed Dict entries in a thread safe way
-#   - each thread has it's own stack, separated by threadid
-# this is not enough for Threads.@spawn (TODO, but no solution yet)
-let _SAVED_COLORS_STACK = Ref{Dict{Int,Vector{NTuple{4,Float64}}}}(Dict(0 => Vector{NTuple{4,Float64}}()))
-    global _saved_colors
-    function _saved_colors()
-        id = Threads.threadid()
-        if !haskey(_SAVED_COLORS_STACK[], id)
-            # predefine all needed Dict entries
-            lc = ReentrantLock()
-            lock(lc)
-            for preID in 1:Threads.nthreads()
-                _SAVED_COLORS_STACK[][preID] = Vector{NTuple{4,Float64}}()
-            end
-            unlock(lc)
-        end
-        if isnothing(_SAVED_COLORS_STACK[][id])
-            # all Dict entries are predefined, so we should never reach this error
-            error("(4)thread id should be preallocated")
-        end
-        # thread specific stack
-        return _SAVED_COLORS_STACK[][id]
-    end
-end
-
 # I originally used simple Cairo save() but the colors/opacity
 # thing I've got going didn't save/restore properly, hence the stack
-"""
-    gsave()
-
-Save the current graphics environment, including current color settings.
-"""
-function gsave()
-    Cairo.save(_get_current_cr())
-    r, g, b, a = (_get_current_redvalue(),
-        _get_current_greenvalue(),
-        _get_current_bluevalue(),
-        _get_current_alpha(),
-    )
-    push!(_saved_colors(), (r, g, b, a))
-    return (r, g, b, a)
+function layer(func)
+    Cairo.save(get_current_cr())
+    r, g, b, a = (get_current_redvalue(),
+                  get_current_greenvalue(),
+                  get_current_bluevalue(),
+                  get_current_alpha()
+                 )
+    res = func()
+    Cairo.restore(get_current_cr())
+    set_current_redvalue(r)
+    set_current_greenvalue(g)
+    set_current_bluevalue(b)
+    set_current_alpha(a)
+    res
 end
 
-"""
-    grestore()
-
-Replace the current graphics state with the one previously saved by the most recent
-`gsave()`.
-"""
-function grestore()
-    Cairo.restore(_get_current_cr())
-    try
-        (r, g, b, a) = pop!(_saved_colors())
-        _set_current_redvalue(r)
-        _set_current_greenvalue(g)
-        _set_current_bluevalue(b)
-        _set_current_alpha(a)
-    catch err
-        println("$err Not enough colors on the stack to restore.")
-    end
-end
-
-"""
-The `@layer` macro is a shortcut for `gsave()` ... `grestore()`.
-"""
 macro layer(a)
-    quote
-        gsave()
-        $(esc(a))
-        grestore()
-    end
+    layer(()->$(esc(a)))
 end
 
 """
