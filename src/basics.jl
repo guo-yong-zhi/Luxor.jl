@@ -6,14 +6,14 @@ Reset the current position, scale, and orientation, and then set the 0/0 origin 
 
 You can refer to the 0/0 point as `O`. (O = `Point(0, 0)`),
 """
-function origin()
+function origin(; drawing=_get_current_drawing_save())
     setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
-    Cairo.translate(_get_current_cr(), _current_width() / 2.0, _current_height() / 2.0)
+    Cairo.translate(drawing.cr, _current_width() / 2.0, _current_height() / 2.0)
 end
 
-function origin(x, y)
+function origin(x, y; drawing=_get_current_drawing_save())
     setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
-    Cairo.translate(_get_current_cr(), x, y)
+    Cairo.translate(drawing.cr, x, y)
 end
 
 """
@@ -21,9 +21,9 @@ end
 
 Reset the current position, scale, and orientation, then move the `0/0` position to `pt`.
 """
-function origin(pt)
+function origin(pt; drawing=_get_current_drawing_save())
     setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
-    Cairo.translate(_get_current_cr(), pt.x, pt.y)
+    Cairo.translate(drawing.cr, pt.x, pt.y)
 end
 
 """

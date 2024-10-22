@@ -863,35 +863,36 @@ Returns `true` if successful.
 For more information about `svgpostprocess` and `addmarker` see help for
 `Luxor._adjust_background_rects`
 """
-function finish(; svgpostprocess = false, addmarker = true)
-    if _current_surface_ptr() == C_NULL
+function finish(; svgpostprocess = false, addmarker = true, drawing=_get_current_drawing_save())
+    if drawing.surface.ptr == C_NULL
         # Already finished
         return false
     end
-    if _current_surface_type() == :png
-        Cairo.write_to_png(_current_surface(), _current_buffer())
+    drawing.surface
+    if drawing.surfacetype == :png
+        Cairo.write_to_png(drawing.surface, drawing.buffer)
     end
 
-    if _current_surface_type() == :image &&
+    if drawing.surfacetype == :image &&
        (
-           typeof(_current_surface()) == Cairo.CairoSurfaceImage{ARGB32} ||
-           typeof(_current_surface()) == Cairo.CairoSurfaceImage{RGB24}
-       ) && endswith(_current_filename(), r"\.png"i)
-        Cairo.write_to_png(_current_surface(), _current_buffer())
+           typeof(drawing.surface) == Cairo.CairoSurfaceImage{ARGB32} ||
+           typeof(drawing.surface) == Cairo.CairoSurfaceImage{RGB24}
+       ) && endswith(drawing.filename, r"\.png"i)
+        Cairo.write_to_png(drawing.surface, drawing.buffer)
     end
 
-    Cairo.finish(_current_surface())
-    Cairo.destroy(_current_surface())
+    Cairo.finish(drawing.surface)
+    Cairo.destroy(drawing.surface)
 
-    if _current_filename() != ""
-        @debug " ... finish() $(_current_filename())"
-        if (_current_surface_type() != :svg) || !svgpostprocess
+    if drawing.filename != ""
+        @debug " ... finish() $(drawing.filename)"
+        if (drawing.surfacetype != :svg) || !svgpostprocess
             @debug " ... finish() not :svg or not svgpostprocess)"
-            @debug _current_surface_type()
+            @debug drawing.surfacetype
             @debug !svgpostprocess
-            seekstart(_current_buffer())
-            drawingdata = read(_current_buffer(), String)
-            write(_current_filename(), drawingdata)
+            seekstart(drawing.buffer)
+            drawingdata = read(drawing.buffer, String)
+            write(drawing.filename, drawingdata)
         else
             @debug " ... finish() :svg || svgpostprocess"
             # next function call adresses the issue in
@@ -905,11 +906,11 @@ function finish(; svgpostprocess = false, addmarker = true)
             #          which is applied to every element including the background rects.
             #          This transformation needs to be inversed for the background rects
             #          which is added in this function.
-            seekstart(_current_buffer())
-            modified_buffer = _adjust_background_rects(copy(_current_buffer()); addmarker = addmarker)
+            seekstart(drawing.buffer)
+            modified_buffer = _adjust_background_rects(copy(drawing.buffer); addmarker = addmarker)
             # hopefully safe as we are at the end of finish:
-            _current_drawing()[_current_drawing_index()].buffer = IOBuffer(modified_buffer)
-            write(_current_filename(), read(_current_buffer(), String))
+            drawing.buffer = IOBuffer(modified_buffer)
+            write(drawing.filename, read(drawing.buffer, String))
         end
     end
 

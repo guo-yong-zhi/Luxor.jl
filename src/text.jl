@@ -56,7 +56,7 @@ Other text functions:
 
 `textwrap()` - draw text to fit a box after re-justifying the lines to fit nicely
 """
-function text(t::T where {T<:AbstractString}, pt::Point;
+function text(t::T where {T<:AbstractString}, pt::Point; drawing=_get_current_drawing_save(),
     halign=:left,
     valign=:baseline,
     angle=0.0)
@@ -102,7 +102,7 @@ function text(t::T where {T<:AbstractString}, pt::Point;
     translate(finalpt)
     rotate(angle)
     newpath()
-    Cairo.show_text(_get_current_cr(), t)
+    Cairo.show_text(drawing.cr, t)
     end
 
     return Point(textpointx, textpointy)
@@ -133,7 +133,7 @@ fontface(f) =
 
 Set the font size to `n` units. The default size is 10 units. (Toy API)
 """
-fontsize(n) = Cairo.set_font_size(_get_current_cr(), n)
+fontsize(n; drawing=_get_current_drawing_save()) = Cairo.set_font_size(drawing.cr, n)
 
 
 """
