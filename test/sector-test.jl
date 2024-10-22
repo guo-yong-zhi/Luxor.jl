@@ -34,7 +34,7 @@ end
 # rounded
 setopacity(0.75)
 for i in 1:10
-    gsave()
+    @layer begin
     translate(rand(-500:500), rand(-500:500))
     for inner in 90:30:210
         for a in 0:pi/12:2pi
@@ -44,7 +44,7 @@ for i in 1:10
             sector(inner, inner + 20, a, a + pi/12, 10, :stroke)
         end
     end
-    grestore()
+    end
 end
 
 @test finish() == true

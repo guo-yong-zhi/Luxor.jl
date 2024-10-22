@@ -236,7 +236,7 @@ end
 """
 function box(centerpoint::Point, width, height, cornerradii::Array;
         action=:none)
-    gsave()
+    @layer begin
     translate(centerpoint)
 
     length(cornerradii) != 4 && throw(error("box() must have four values to specify rounded corners"))
@@ -284,7 +284,7 @@ function box(centerpoint::Point, width, height, cornerradii::Array;
     line(p4end)
 
     closepath()
-    grestore()
+    end
     do_action(action)
     return Point(centerpoint.x - width/2, centerpoint.y - height/2),
            Point(centerpoint.x + width/2, centerpoint.y + height/2)
@@ -478,7 +478,7 @@ Draw cropmarks (also known as trim marks). Use current color.
 function cropmarks(center, width, height)
     gap = 5
     crop = 15
-    gsave()
+    @layer begin
     setline(0.5)
     setdash("solid")
     # horizontal top left
@@ -521,7 +521,7 @@ function cropmarks(center, width, height)
          Point(width/2, height/2 + gap + crop),
          :stroke)
 
-    grestore()
+    end
 end
 
 """

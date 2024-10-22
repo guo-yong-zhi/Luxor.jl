@@ -15,7 +15,7 @@ function poly_areas()
 end
 
 function simple_polys()
-    gsave()
+    @layer begin
     sethue(0, 0, 0)
     vstep = 50
     hstep = 50
@@ -40,7 +40,7 @@ function simple_polys()
             y += vstep
         end
     end
-    grestore()
+    end
 
     @layer begin
         translate(BoundingBox()[1] + (0, 130))
@@ -55,7 +55,7 @@ function simple_polys()
 end
 
 function hex_mixtures()
-    gsave()
+    @layer begin
     vstep = 50
     hstep = 50
     for y in -currentheight:vstep:currentheight
@@ -63,7 +63,7 @@ function hex_mixtures()
             setopacity(0.2)
             setline(rand()*10)
             sethue(backgroundcolors[rand(1:end)])
-            gsave()
+            @layer begin
                  translate(x, y)
                  rotate(rand() * pi)
                  # point version
@@ -78,9 +78,9 @@ function hex_mixtures()
                         Point(rand() * -100, rand() * 100),
                         Point(rand() * -100, rand() * 100)
                      ], :fill)
-            grestore()
+            end
             sethue(backgroundcolors[rand(1:end)])
-            gsave()
+            @layer begin
                  translate(x, y)
                  ngon(x, y, 50, rand(3:13), 0, :stroke)
                  rotate(rand() * pi)
@@ -88,10 +88,10 @@ function hex_mixtures()
                  ngon(x, y, 50, rand(3:13), 0, :fill)
                  rect(0, 0, hstep-5, vstep-5, :stroke)
                  ngon(x, y, 50, rand(3:13), 0, :none)
-            grestore()
+            end
         end
     end
-    grestore()
+    end
 end
 
 hexagon(x, y, size) = [Point(x + size * cos(2pi/6 * i), y + size * sin(2pi/6 * i)) for i in 1:6]

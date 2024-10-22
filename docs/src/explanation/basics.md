@@ -214,11 +214,11 @@ nothing # hide
 ```julia
 @svg begin
     circle(Point(0, 0), 100, action = :stroke)
-    gsave()
+    @layer begin
         sethue("red")
         rule(Point(0, 0))
         rule(Point(0, 0), pi/2)
-    grestore()
+    end
     circle(Point(0, 0), 200, action = :stroke)
 end
 ```

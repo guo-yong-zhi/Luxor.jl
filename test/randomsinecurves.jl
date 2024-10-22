@@ -43,7 +43,7 @@ function random_sines(w, h, fname)
          "dotdotdashed",
          "dotdotdotdashed"
          ][rand(1:end)])
-        gsave()
+        @layer begin
         sf = rand(1:15)
         scale(sf, sf)
         translate(0, rand(-h/2:h/2))
@@ -57,7 +57,7 @@ function random_sines(w, h, fname)
          h,                                          # pageheight
          [:fill, :stroke, :stroke, :fillstroke][rand(1:end)], # random drawing style
          rand(0.1:0.1:0.5))
-        grestore()
+        end
     end
     @test finish() == true
 end

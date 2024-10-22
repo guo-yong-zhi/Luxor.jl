@@ -244,11 +244,11 @@ addstop(goldblend, 1.0,  "gold2")
 setblend(goldblend)
 tiles = Tiler(600, 200, 1, 5, margin=10)
 for (pos, n) in tiles
-    gsave()
+    @layer begin
     setblend(goldblend)
     translate(pos)
     ellipse(O, tiles.tilewidth, tiles.tilewidth, action = :fill)
-    grestore()
+    end
 end
 finish() # hide
 nothing # hide
@@ -272,11 +272,11 @@ addstop(goldblend, 1.0,  "gold2")
 setblend(goldblend)
 tiles = Tiler(600, 200, 1, 5, margin=10)
 for (pos, n) in tiles
-    gsave()
+    @layer begin
     translate(pos)
     setblend(goldblend)
     ellipse(O, tiles.tilewidth, tiles.tilewidth, action = :fill)
-    grestore()
+    end
 end
 finish() # hide
 nothing # hide
@@ -311,13 +311,13 @@ line(Point(-100, 50), Point(0, 50))
 strokepath()
 
 # fourth line
-gsave()
+@layer begin
 translate(0, 100)
 scale(0.5, 0.5)
 setblend(blendgoldmagenta)
 line(Point(-100, 0), Point(100, 0))
 strokepath()
-grestore()
+end
 
 finish() # hide
 nothing # hide
@@ -424,7 +424,7 @@ modes = length(Luxor.blendingmodes)
 setcolor("black")
 for (pos, n) in tiles
     n > modes && break
-    gsave()
+    @layer begin
     translate(pos)
     box(O, tiles.tilewidth-10, tiles.tileheight-10, :clip)
 
@@ -445,9 +445,9 @@ for (pos, n) in tiles
     circle(lower, tiles.tilewidth/4, action = :fill)
 
     clipreset()
-    grestore()
+    end
 
-    gsave()
+    @layer begin
     translate(pos)
     sethue("antiquewhite")
     txt = Luxor.blendingmodes[mod1(n, modes)]
@@ -455,7 +455,7 @@ for (pos, n) in tiles
     box(pos, textextents(txt)[3] + 5, 25, action = :fill)
     sethue("black")
     text(txt, pos, halign=:center, valign=:middle)
-    grestore()
+    end
 end
 finish() # hide
 d # hide

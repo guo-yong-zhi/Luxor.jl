@@ -475,7 +475,7 @@ Notice that this function doesn't define anything about what color it is, or whe
 @png begin
     setopacity(0.7)
     for θ in range(0, step=π/6, length=12)
-        gsave()
+        @layer begin
             rotate(θ)
             translate(0, -150)
             egg(50, :path)
@@ -485,7 +485,7 @@ Notice that this function doesn't define anything about what color it is, or whe
 
             randomhue()
             strokepath()
-        grestore()
+        end
     end
 end 800 800 "eggstravaganza.png"
 ```
@@ -526,7 +526,7 @@ background("white")
 origin()
 setopacity(0.7)
 for θ in range(0, step=π/6, length=12)
-    gsave()
+    @layer begin
         rotate(θ)
         translate(0, -150)
         egg(50, :path)
@@ -536,7 +536,7 @@ for θ in range(0, step=π/6, length=12)
 
         randomhue()
         strokepath()
-    grestore()
+    end
 end
 finish()
 ```
@@ -735,13 +735,13 @@ using Luxor, Colors
     sethue("gold")
     eg(:fill)
     eg(:clip)
-    gsave()
+    @layer begin
        for i in 360:-4:1
            sethue(Colors.HSV(i, 1.0, 0.8))
            rotate(π/30)
            ngon(O, i, 5, 0, action = :stroke)
        end
-    grestore()
+    end
     clipreset()
     sethue("red")
     eg(:stroke)
@@ -786,13 +786,13 @@ eg(a) = egg(150, a)
 sethue("gold")
 eg(:fill)
 eg(:clip)
-gsave()
+@layer begin
    for i in 360:-4:1
        sethue(Colors.HSV(i, 1.0, 0.8))
        rotate(π/30)
        ngon(O, i, 5, 0, action = :stroke)
    end
-grestore()
+end
 clipreset()
 sethue("red")
 eg(:stroke)

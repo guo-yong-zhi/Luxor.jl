@@ -19,7 +19,7 @@ function arrow_line_test(fname)
     setlinecap()
     setlinejoin()
     randomhue()
-    gsave()
+    @layer begin
     arrow(pos, Point(pos.x + 200, pos.y),
       decorate = () -> begin
         setline(0.2)
@@ -31,7 +31,7 @@ function arrow_line_test(fname)
       arrowheadangle=rand(pi/20:pi/12:pi/3))
     # same length as a non-arrow line?
     line(Point(pos.x, pos.y + 10), Point(pos.x + 200, pos.y+10), :stroke)
-    grestore()
+    end
   end
   @test finish() == true
 

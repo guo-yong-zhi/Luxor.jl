@@ -120,18 +120,18 @@ origin()
 background("white")
 
 for θ in range(0, step=π/8, length=16)
-    gsave()
+    @layer begin
     scale(0.2)
     rotate(θ)
     translate(350, 0)
     julialogo(action=:fill, bodycolor=randomhue())
-    grestore()
+    end
 end
 
-gsave()
+@layer begin
 scale(0.3)
 juliacircles()
-grestore()
+end
 
 translate(150, -150)
 scale(0.3)

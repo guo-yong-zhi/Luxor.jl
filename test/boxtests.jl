@@ -14,7 +14,7 @@ function test_boxes(fname)
     origin() # move 0/0 to center
     background("ivory")
     setopacity(0.5)
-    gsave()
+    @layer begin
     t = Tiler(1000, 1000, 20, 20)
     for (pos, n) in t
         randomhue()
@@ -24,7 +24,7 @@ function test_boxes(fname)
         strokepath()
     end
 
-    grestore()
+    end
 
     sethue("black") # hide
     setline(4)

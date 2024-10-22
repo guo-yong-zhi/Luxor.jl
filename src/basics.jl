@@ -111,12 +111,11 @@ background(0, 0, 0, 0)
 Returns a tuple `(r, g, b, a)` of the color that was used to paint the background.
 """
 function background(col::Colors.Colorant)
-    gsave()
+    @layer begin
     setcolor(col)
     paint()
     r, g, b, a = _get_current_redvalue(), _get_current_greenvalue(), _get_current_bluevalue(), _get_current_alpha()
-    grestore()
-    return (r, g, b, a)
+    end
 end
 
 function background(col::T) where {T<:AbstractString}
@@ -589,27 +588,9 @@ function rule(point1::Point, point2::Point;
         vertices=vertices)
 end
 
-# I originally used simple Cairo save() but the colors/opacity
-# thing I've got going didn't save/restore properly, hence the stack
-function layer(func)
-    Cairo.save(get_current_cr())
-    r, g, b, a = (get_current_redvalue(),
-                  get_current_greenvalue(),
-                  get_current_bluevalue(),
-                  get_current_alpha()
-                 )
-    res = func()
-    Cairo.restore(get_current_cr())
-    set_current_redvalue(r)
-    set_current_greenvalue(g)
-    set_current_bluevalue(b)
-    set_current_alpha(a)
-    res
-end
 
-macro layer(a)
-    :(layer(()->$(esc(a))))
-end
+
+
 
 """
     scale(x, y)

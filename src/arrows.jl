@@ -13,7 +13,7 @@ but you can specify another value.
 """
 function arrowhead(target, action=:fill;
         shaftangle=0, headlength=10, headangle=pi/8)
-    gsave()
+    @layer begin
     topangle = shaftangle + headangle
     botangle = shaftangle - headangle
 
@@ -22,7 +22,7 @@ function arrowhead(target, action=:fill;
     botx = target.x + cos(botangle) * headlength
     boty = target.y + sin(botangle) * headlength
     poly([Point(topx, topy), target, Point(botx, boty)], action)
-    grestore()
+    end
 end
 
 """
@@ -100,7 +100,7 @@ function arrow(startpoint::Point, endpoint::Point;
         decorate          = nothing,
         arrowheadfunction = nothing)
 
-    gsave()
+    @layer begin
     setlinejoin("butt")
     setline(linewidth)
 
@@ -157,7 +157,7 @@ function arrow(startpoint::Point, endpoint::Point;
             end
         end
     end
-    grestore()
+    end
 end
 
 """
@@ -209,7 +209,7 @@ function arrow(centerpos::Point, radius, startangle, endangle;
         startangle, endangle = endangle, startangle
     end
 
-    gsave()
+    @layer begin
     setlinejoin("butt")
     setline(linewidth)
     translate(centerpos)
@@ -265,7 +265,7 @@ function arrow(centerpos::Point, radius, startangle, endangle;
     # use-suppplied shaft decoration function?
     if decorate === nothing
     else
-        gsave()
+        @layer begin
         for decpos in decoration
             decorationangle = rescale(decpos, 0, 1, startangle, newendangle)
             decorationpoint = Point(radius * cos(decorationangle), radius * sin(decorationangle))
@@ -276,9 +276,9 @@ function arrow(centerpos::Point, radius, startangle, endangle;
                 decorate()
             end
         end
-        grestore()
+        end
     end
-    grestore()
+    end
 end
 
 """

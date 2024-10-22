@@ -16,7 +16,7 @@ function unit_conversions_test(fname)
     tiles = Tiler(pagewidth, pageheight, 10, 4, margin=10)
     p = rand()
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         sethue("blue")
         translate(pos)
         if n % 2 == 0
@@ -40,7 +40,7 @@ function unit_conversions_test(fname)
             rect(O, p * 28.3464566929, p * 28.3464566929, :stroke)
             circle(O, p * 28.3464566929, :stroke)
         end
-        grestore()
+        end
     end
     @test finish() == true
 end

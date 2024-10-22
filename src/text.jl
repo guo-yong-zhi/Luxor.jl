@@ -98,12 +98,12 @@ function text(t::T where {T<:AbstractString}, pt::Point;
     # rotate around original point
     finalpt = rotatepoint(Point(textpointx, textpointy), pt, angle)
 
-    gsave()
+    @layer begin
     translate(finalpt)
     rotate(angle)
     newpath()
     Cairo.show_text(_get_current_cr(), t)
-    grestore()
+    end
 
     return Point(textpointx, textpointy)
 end
@@ -366,7 +366,7 @@ function textcurve(the_text::T where {T<:AbstractString}, start_angle, start_rad
         angle_step = (glyph_x_advance / 2.0) + letter_spacing / 2.0
         xx = cos(refangle) * current_radius + pos.x
         yy = sin(refangle) * current_radius + pos.y
-        gsave()
+        @layer begin
         translate(xx, yy)
         if clockwise
             rotate(pi / 2 + refangle)
@@ -374,7 +374,7 @@ function textcurve(the_text::T where {T<:AbstractString}, start_angle, start_rad
             rotate(-pi / 2 + refangle)
         end
         text(glyph, O, halign=:center)
-        grestore()
+        end
         current_radius < 10 && break
     end
 end

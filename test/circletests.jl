@@ -15,7 +15,7 @@ function test_circles(fname)
     setopacity(0.8)
     setline(0.4)
     fontsize(2)
-    gsave()
+    @layer begin
     translate(0, -pageheight / 2)
     pagetiles = Tiler(pagewidth, pageheight, 20, 20, margin=50)
     rad = 40
@@ -28,9 +28,9 @@ function test_circles(fname)
         randomhue()
         circle(pos, secondpos, :fill)
     end
-    grestore()
+    end
 
-    gsave()
+    @layer begin
     translate(0, pageheight / 2)
     pagetiles = Tiler(pagewidth, pageheight, 20, 20, margin=50)
     rad = 40
@@ -51,7 +51,7 @@ function test_circles(fname)
         end
         setopacity(0.8)
     end
-    grestore()
+    end
 
     @test finish() == true
     println("...finished circletest, saved in $(fname)")

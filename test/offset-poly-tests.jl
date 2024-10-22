@@ -16,7 +16,7 @@ function offset_poly_test(fname)
     tiles = Tiler(Luxor._current_width(), Luxor._current_height(), 6, 6, margin=20)
     randomoffset = 18
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         translate(pos)
         radius =  tiles.tilewidth/4
         p = star(O, radius, 5, 0.25, 0, vertices=true)
@@ -28,7 +28,7 @@ function offset_poly_test(fname)
         randomoffset -= 1
         poly(offsetpoly(p, randomoffset), :stroke, close=true)
         text(string(randomoffset), O.x, O.y + tiles.tilewidth/2, halign=:center)
-        grestore()
+        end
     end
     @test finish() == true
 end

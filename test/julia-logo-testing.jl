@@ -12,7 +12,7 @@ function julia_logo_test(fname)
     origin()
     background("white")
     for (pos, n) in Tiler(1000, 1000, 2, 2)
-        gsave()
+        @layer begin
         translate(pos - Point(150, 100))
         if n == 1
             julialogo()
@@ -29,13 +29,13 @@ function julia_logo_test(fname)
             setopacity(0.6)
             for i in 1:400
                 randomhue()
-                gsave()
+                @layer begin
                 box(Point(rand(0:250), rand(0:250)), 350, 5, :fill)
-                grestore()
+                end
             end
             clipreset()
         end
-        grestore()
+        end
     end
     @test finish() == true
 end

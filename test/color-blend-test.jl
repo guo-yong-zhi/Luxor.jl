@@ -26,7 +26,7 @@ function color_blend_test(fname)
     addstop(redblueradialblend, 1, (0, 0, 1, 0.15))
     tiles = Tiler(1200, 1200, 5, 5, margin=20)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         # take a Cairo matrix, convert it to Julia, apply scale, rotate, and translate matrix
         # transforms, convert back to Cairo, and apply it to the blend.
         # It doesn't seem right, does it...
@@ -47,7 +47,7 @@ function color_blend_test(fname)
         text("linear", O + Point(5,5))
         setblend(blendrad)
         text("radial", O - Point(5,5))
-        grestore()
+        end
     end
 
     sethue("black")

@@ -7,7 +7,7 @@ Random.seed!(42)
 using Test
 
 function test_circular_arrows_1(pos)
-    gsave()
+    @layer begin
     froma = rescale(rand(1:100), 1, 100, 0, 2pi)
     toa =   rescale(rand(1:100), (1, 100), (0, 2pi))
     sethue("black")
@@ -18,7 +18,7 @@ function test_circular_arrows_1(pos)
     arrow(pos, 100, toa, froma; linewidth=rand(1:6), arrowheadlength=rand(10:30))
     text(string("from: ", round(rad2deg(toa), digits=1)), pos.x, pos.y+20)
     text(string("to: ", round(rad2deg(froma), digits=1)), pos.x, pos.y+30)
-    grestore()
+    end
 end
 
 function test_circular_arrows_2(pos, w)

@@ -16,7 +16,7 @@ function randompoly(rad, n)
 end
 
 function testapoly(pos)
-    gsave()
+    @layer begin
     translate(pos)
 
     sethue("white")
@@ -31,10 +31,10 @@ function testapoly(pos)
 
     # poly(p1, close=true, :fillstroke)
     # for p in p1
-    #     gsave()
+    #     @layer begin
     #     sethue("black")
     #     circle(p, 1, :fill)
-    #     grestore()
+    #     end
     # end
 
 
@@ -47,20 +47,20 @@ function testapoly(pos)
     # draw each poly
     for ply in twopolys
         if length(ply) > 1
-            gsave()
+            @layer begin
             randomhue()
             poly(ply, close=true, :fill)
-            grestore()
+            end
         end
     end
 
-    gsave()
+    @layer begin
     sethue("red")
     setdash("dotted")
     line(randomline[1], randomline[2], :stroke)
-    grestore()
+    end
 
-    grestore()
+    end
 end
 
 fname = "polysplit.pdf"

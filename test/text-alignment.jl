@@ -8,18 +8,18 @@ using Random
 Random.seed!(42)
 
 function drawdot(pos)
-    gsave()
+    @layer begin
     sethue("red")
     circle(pos, 5, :fill)
-    grestore()
+    end
 end
 
 function showt(c, p, ha, va, n)
   text(c, p, halign=ha, valign=va)
-  gsave()
+  @layer begin
   setopacity(0.1)
   text(string(n), p, angle=0)
-  grestore()
+  end
 end
 
 function text_alignment_tests(fname)
@@ -37,12 +37,12 @@ function text_alignment_tests(fname)
     current_h = 1
     current_v = 1
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         h = haligns[current_h]
         v = valigns[current_v]
         drawdot(pos)
         showt("Å˰̀Ά", pos, h, v, n)
-        grestore()
+        end
         push!(legend, "$n h: $h v: $v")
         current_h += 1
         if current_h > 5

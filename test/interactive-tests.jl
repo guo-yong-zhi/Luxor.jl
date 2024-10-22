@@ -17,7 +17,7 @@ function draw_hypotrochoids()
     setopacity(0.8)
     tiles = Tiler(1200, 1200, 6, 6)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         setline(.5)
         translate(pos)
 
@@ -55,7 +55,7 @@ function draw_hypotrochoids()
         poly(offsetpoly(p, 15), :stroke, close=true)
         text("offset 15", halign=:center, O.x, O.y+tiles.tileheight/2 + 20)
 
-        grestore()
+        end
     end
 end
 

@@ -123,10 +123,10 @@ The `sunfunction` draws a sun at 24 positions during the day. Since the framenum
 ```julia
 function sunfunction(scene::Scene, framenumber)
     t = rescale(framenumber, 0, 23, 2pi, 0)
-    gsave()
+    @layer begin
     sethue("yellow")
     circle(polar(150, t), 20, action = :fill)
-    grestore()
+    end
 end
 ```
 
@@ -134,10 +134,10 @@ And finally, tere's a `groundfunction` that draws the ground, the lower half of 
 
 ```julia
 function groundfunction(scene::Scene, framenumber)
-    gsave()
+    @layer begin
     sethue("brown")
     box(Point(O.x, O.y + 100), 400, 200, action = :fill)
-    grestore()
+    end
     sethue("white")
 end
 ```

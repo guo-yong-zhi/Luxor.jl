@@ -8,16 +8,16 @@ using Random
 Random.seed!(42)
 
 function drawpolyboundingbox(apoly)
-    gsave()
+    @layer begin
     setline(0.3)
     setdash("dotted")
     poly(convert(Vector{Point}, BoundingBox(apoly)), :stroke, close=true)
     box(BoundingBox(apoly), :stroke)
-    grestore()
+    end
 end
 
 function drawpoly(p, x, y, counter)
-    gsave()
+    @layer begin
     translate(x, y)
     sethue("purple")
 
@@ -48,15 +48,15 @@ function drawpoly(p, x, y, counter)
 
     # highlight cases where centroid isn't inside poly. Might be an error...
     if ! isinside(cp, psort)
-        gsave()
+        @layer begin
         setdash("dotted")
         setopacity(0.2)
         sethue("red")
         circle(cp, 100, :fillstroke)
-        grestore()
+        end
     end
 
-    grestore()
+    end
 end
 
 function polycentroidsort(width, height)

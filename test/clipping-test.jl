@@ -9,7 +9,7 @@ Random.seed!(42)
 
 function drawlogoclip(x, y)
     foregroundcolors = diverging_palette(rand(0:360), rand(0:360), 200, s = 0.99, b=0.8)
-    gsave()
+    @layer begin
     translate(x-100, y)
     julialogo(action=:clip)
     for i in 1:500
@@ -18,14 +18,14 @@ function drawlogoclip(x, y)
     end
     #  to test clippreserve(), draw a path, and it is intersected with clip region (julia logo)
     # then filled with solid red
-    gsave()
+    @layer begin
         circle(O, 200, :path)
         clippreserve()
         setcolor("red")
         fillpath()
-    grestore()
+    end
     clipreset()
-    grestore()
+    end
 end
 
 function clipping_test(fname)

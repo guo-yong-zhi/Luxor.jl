@@ -326,12 +326,12 @@ end
     background("black")
     sethue("white")
     for x in -250:20:250, y in -250:20:250
-        gsave()
+        @layer begin
             translate(Point(x, y))
             scale(0.1)
             rotate(rand() * 2π)
             t()
-        grestore()
+        end
     end
 end
 ```

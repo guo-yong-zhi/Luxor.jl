@@ -24,12 +24,12 @@ function image_testing(fname)
     for (pos, n) in pagetiles
         circle(pos, tw, :stroke)
         circle(pos, tw, :clip)
-        gsave()
+        @layer begin
         translate(pos)
         scale(25, 25)
         rotate(rand(0.0:pi/8:2pi))
         placeimage(image, O, centered=true)
-        grestore()
+        end
         clipreset()
     end
     @test finish() == true

@@ -436,7 +436,7 @@ function sector(centerpoint::Point, innerradius::Real, outerradius::Real,
     startangle::Real, endangle::Real;
     action = :none)
     (innerradius > outerradius) && throw(DomainError(outerradius, "outer radius must be larger than inner radius $(innerradius)"))
-    gsave()
+    @layer begin
     translate(centerpoint)
     newpath()
     move(innerradius * cos(startangle), innerradius * sin(startangle))
@@ -445,7 +445,7 @@ function sector(centerpoint::Point, innerradius::Real, outerradius::Real,
     line(innerradius * cos(endangle), innerradius * sin(endangle))
     carc(0, 0, innerradius, endangle, startangle, action = :none)
     closepath()
-    grestore()
+    end
     do_action(action)
 end
 
@@ -485,7 +485,7 @@ function sector(centerpoint::Point, innerradius::Real, outerradius::Real, starta
     endangle::Real, cornerradius::Real;
     action = :none)
     (innerradius > outerradius) && throw(DomainError(outerradius, "outer radius must be larger than inner radius $(innerradius)"))
-    gsave()
+    @layer begin
     translate(centerpoint)
     # some work is done using polar coords to calculate the points
 
@@ -546,7 +546,7 @@ function sector(centerpoint::Point, innerradius::Real, outerradius::Real, starta
     carc(O, innerradius, s1, s2, action = :none)
     closepath()
     do_action(action)
-    grestore()
+    end
 end
 
 sector(centerpoint::Point, innerradius::Real, outerradius::Real, startangle::Real, endangle::Real,
@@ -581,14 +581,14 @@ TODO - return something more useful than a Boolean
 """
 function pie(x::Real, y::Real, radius::Real, startangle::Real, endangle::Real;
     action = :none)
-    gsave()
+    @layer begin
     translate(x, y)
     newpath()
     move(0, 0)
     line(radius * cos(startangle), radius * sin(startangle))
     arc(0, 0, radius, startangle, endangle, action = :none)
     closepath()
-    grestore()
+    end
     do_action(action)
 end
 

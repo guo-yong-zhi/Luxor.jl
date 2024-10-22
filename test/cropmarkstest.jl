@@ -15,14 +15,14 @@ function cropmarkstest(fname)
     box(O, 1200, 1200, :fill)
     tiles = Tiler(600, 600, 3, 3, margin=30)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         translate(pos)
         randomhue()
         setopacity(rand())
         box(O, tiles.tilewidth - 25, tiles.tileheight - 25, :fill)
         cropmarks(O, tiles.tilewidth - 25, tiles.tileheight - 25)
         clipreset()
-        grestore()
+        end
     end
     cropmarks(O, 1200, 1200)
     @test finish() == true

@@ -239,11 +239,11 @@ function prettypoly(pointlist::Vector{Point}, vertexfunction = () -> circle(O, 2
     pointnumber = 1
 
     for p in pointlist
-        gsave()
+        @layer begin
         translate(p.x, p.y)
         vertexfunction()
         vertexlabels(pointnumber, length(pointlist))
-        grestore()
+        end
         pointnumber += 1
     end
 

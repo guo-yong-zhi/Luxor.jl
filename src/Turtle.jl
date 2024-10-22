@@ -91,10 +91,10 @@ function Forward(t::Turtle, d=1)
     t.xpos += (d * cos(t.orientation))
     t.ypos += (d * sin(t.orientation))
     if t.pendown
-        gsave()
+        @layer begin
         sethue(t.pencolor...)
         line(Point(oldx, oldy), Point(t.xpos, t.ypos), :stroke)
-        grestore()
+        end
     end
     _epilog(t)
 end
@@ -166,12 +166,12 @@ Draw a filled circle centered at the current position with the given radius.
 """
 function Circle(t::Turtle, radius=1.0)
     _prolog(t)
-    gsave()
+    @layer begin
     sethue(t.pencolor...)
     if t.pendown
         circle(t.xpos, t.ypos, radius, :fill)
     end 
-    grestore()
+    end
     _epilog(t)
 end
 
@@ -182,12 +182,12 @@ Draw a filled rectangle centered at the current position with the given radius.
 """
 function Rectangle(t::Turtle, width=10.0, height=10.0)
     _prolog(t)
-    gsave()
+    @layer begin
     sethue(t.pencolor...)
     if t.pendown
         rect(t.xpos-width/2, t.ypos-height/2, width, height, :fill)
     end 
-    grestore()
+    end
     _epilog(t)
 end
 
@@ -242,12 +242,12 @@ Write some text at the current position.
 """
 function Message(t::Turtle, txt)
     _prolog(t)
-    gsave()
+    @layer begin
     sethue(t.pencolor...)
     if t.pendown
         text(txt, t.xpos, t.ypos)
     end 
-    grestore()
+    end
     _epilog(t)
 end
 

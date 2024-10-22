@@ -15,7 +15,7 @@ function run_line_intersection_test(fname)
     fontsize(4)
     tiles = Tiler(1000, 1000, 10, 10)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         randomhue()
         translate(pos)
         topleft = Point(-tiles.tilewidth/2, -tiles.tileheight/2)
@@ -29,7 +29,7 @@ function run_line_intersection_test(fname)
         (flag, ip) = intersectionlines(a, b, c, d, crossingonly=true)
         text("the lines $(flag ? "do" : "don't") cross", O)
         if flag
-            gsave()
+            @layer begin
             setline(.5)
             setdash("dot")
             if distance(a, ip) < distance(b, ip)
@@ -43,7 +43,7 @@ function run_line_intersection_test(fname)
                 arrow(d, ip, arrowheadlength=1)
             end
             circle(ip, 2, :fill)
-            grestore()
+            end
         else
             if ip != O
                 box(ip, 2, 2, :fill)
@@ -53,7 +53,7 @@ function run_line_intersection_test(fname)
                 text("intersection point is $(dist) units away", O + (0, 10))
             end
         end
-        grestore()
+        end
     end
     @test finish() == true
 

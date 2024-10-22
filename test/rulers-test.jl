@@ -8,13 +8,13 @@ using Random
 Random.seed!(42)
 
 function test_rulers(x, y, rot, w)
-    gsave()
+    @layer begin
     translate(x, y)
     rotate(rot)
     box(0, 0, w, w, :clip)
     rulers()
     clipreset()
-    grestore()
+    end
 end
 
 function drawing_png_buffer()

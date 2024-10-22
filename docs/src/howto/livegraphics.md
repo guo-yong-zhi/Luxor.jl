@@ -285,12 +285,12 @@ foregroundcolors = Colors.diverging_palette(
     rand(0:360),
     rand(0:360),
     200, s=0.99, b=0.8)
-gsave()
+@layer begin
 for i in 1:500
     sethue(foregroundcolors[rand(1:end)])
     circle(Point(rand(-300:300), rand(-300:300)), 15, :fill)
 end
-grestore()
+end
 ```
 
 Now let's switch to drawing 2 and draw the Julia logo:
@@ -299,9 +299,9 @@ Now let's switch to drawing 2 and draw the Julia logo:
 Luxor.set_drawing_index(2)
 origin()
 setopacity(1.0)
-gsave()
+@layer begin
 julialogo(centered=true, bodycolor=colorant"white")
-grestore()
+end
 ```
 
 Finally, we'll switch to drawing 3, and set its contents by ANDing the buffers of drawings 1 and 2:

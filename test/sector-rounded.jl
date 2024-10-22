@@ -12,7 +12,7 @@ function multitest(w, h)
     tiles = Tiler(w, h, 5, 5)
     setopacity(0.95)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         translate(pos)
         bandthickness = rand(10:tiles.tileheight/4)
         ang = rand(pi/12:pi/12:pi/2)
@@ -27,7 +27,7 @@ function multitest(w, h)
             end
         end
         text("thickness $bandthickness | angle $(rad2deg(ang))", O)
-        grestore()
+        end
     end
 end
 
@@ -35,13 +35,13 @@ function multitest1(w, h)
     tiles = Tiler(w, h, 5, 5)
     setopacity(0.5)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         translate(pos)
         cornerradius = rand(5:14)
         endangle = deg2rad(45/n)
         sector(60, 90, 0, endangle, cornerradius, :fillstroke)
         text("corner $cornerradius angle $(rad2deg(endangle))")
-        grestore()
+        end
     end
 end
 
@@ -49,14 +49,14 @@ function run_sectorround_test(fname)
     Drawing(2000, 2000, fname)
     origin()
     tiles = Tiler(2000, 2000, 2, 1)
-    gsave()
+    @layer begin
     translate(tiles[1][1])
     multitest(2000, 1000)
-    grestore()
-    gsave()
+    end
+    @layer begin
     translate(tiles[2][1])
     multitest1(2000, 1000)
-    grestore()
+    end
     @test finish() == true
     println("...finished test: output in $(fname)")
 end

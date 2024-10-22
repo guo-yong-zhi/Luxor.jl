@@ -19,7 +19,7 @@ function poly_split_2(fname)
     setline(2)
     tiles = Tiler(2500, 2500, 6, 6, margin=25)
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         s = squircle(O, tiles.tileheight/2 - 10, tiles.tileheight/2 - 10, vertices=true)
         translate(pos)
         pt1 = Point(O.x + rand(-120:120), -tiles.tileheight/2)
@@ -35,7 +35,7 @@ function poly_split_2(fname)
         randomhue()
         translate(5, 0)
         prettypoly(poly2, :fill, close=true)
-        grestore()
+        end
     end
     @test finish() == true
 end

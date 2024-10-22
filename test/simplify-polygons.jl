@@ -10,7 +10,7 @@ using Random
 Random.seed!(42)
 
 function sinecurves()
-    gsave()
+    @layer begin
     translate(100, 100)
     setline(0.25)
     sethue(0, 0, 0)
@@ -25,7 +25,7 @@ function sinecurves()
         prettypoly(simplified, :stroke, () -> (gsave(); randomhue(); circle(O, 0.5, :stroke); grestore()))
         text("detail  $(detail), " * string(length(simplified)) * " vertices" , 0, -15)
     end
-    grestore()
+    end
 end
 
 function test(pagewidth, pageheight)
@@ -39,12 +39,12 @@ function test(pagewidth, pageheight)
     prettypoly(polyline)
     text("original " * string(length(polyline)) * " vertices" , 0, -30)
     for detail in [0.01, 0.05, 0.075, 0.1, 0.2, 0.5, 0.75, 1.0, 2.0]
-        gsave()
+        @layer begin
         translate(nextgridpoint(g))
         polysimple = simplify(polyline, detail)
         prettypoly(polysimple, :stroke, () -> (gsave(); randomhue(); circle(O, 2, :stroke); grestore()))
         text(" detail ($detail), " * string(length(polysimple)) * " vertices" , 0, -20)
-        grestore()
+        end
     end
 end
 

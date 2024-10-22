@@ -17,7 +17,7 @@ function test_intersections(fname)
     tiles = Tiler(2000, 2000, 5, 5)
 
     for (pos, n) in tiles
-        gsave()
+        @layer begin
         translate(pos)
         box(O, tiles.tilewidth, tiles.tileheight, :clip)
         p1 = Point(rand(-tiles.tilewidth/2:tiles.tilewidth/2), rand(-tiles.tileheight/2:tiles.tilewidth/2))
@@ -25,7 +25,7 @@ function test_intersections(fname)
         p3 = Point(rand(-tiles.tilewidth/2:tiles.tilewidth/2), rand(-tiles.tileheight/2:tiles.tilewidth/2))
         map(pt -> circle(pt, 2, :fill), [p1, p2, p3])
 
-        gsave()
+        @layer begin
         randomhue()
         rad = rand(20:tiles.tilewidth/3)
         circle(p2, rad, :fill)
@@ -36,7 +36,7 @@ function test_intersections(fname)
         setdash("dot")
         setline(0.5)
         line(between(p1, p3, -5), between(p1, p3, 5), :stroke)
-        grestore()
+        end
 
         sethue("red")
         n, int1, int2 = intersectionlinecircle(p1, p3, p2, rad)
@@ -49,7 +49,7 @@ function test_intersections(fname)
         sethue("black")
         text("$n intersection(s)")
         box(O, tiles.tilewidth, tiles.tileheight, :stroke)
-        grestore()
+        end
     end
     l1 = Luxor.Point(-100.0, -100.0)
     l2 = Luxor.Point(300.0, 200.0)

@@ -5,11 +5,11 @@ using Luxor
 using Test, Random
 
 function drawbbox(apoly)
-    gsave()
+    @layer begin
     setline(0.3)
     setdash("dotted")
     box(BoundingBox(apoly), :stroke)
-    grestore()
+    end
 end
 
 function pretty_test1(p, x, y)
@@ -84,7 +84,7 @@ function draw_lots_of_polys(pagewidth, pageheight)
         else
             p = ngon(0, 0, rand(50:100), rand(3:12), vertices=true)
         end
-        gsave()
+        @layer begin
         translate(pos)
         setline(1)
         randomhue()
@@ -96,7 +96,7 @@ function draw_lots_of_polys(pagewidth, pageheight)
             test3(p)
         end
         drawbbox(p)
-        grestore()
+        end
     end
 end
 

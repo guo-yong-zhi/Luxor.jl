@@ -18,7 +18,7 @@ function blend_mode_test(fname)
     setgrey(0.15)
     for (pos, n) in tiles
         n > modes && break
-        gsave()
+        @layer begin
         translate(pos)
         box(O, tiles.tilewidth-10, tiles.tileheight-10, :clip)
 
@@ -39,12 +39,12 @@ function blend_mode_test(fname)
         circle(lower, tiles.tilewidth/4, :fill)
 
         clipreset()
-        grestore()
+        end
 
-        gsave()
+        @layer begin
         translate(pos)
         text(Luxor.blendingmodes[mod1(n, modes)], O.x, O.y + tiles.tilewidth/2, halign=:center)
-        grestore()
+        end
     end
     @test finish() == true
 end

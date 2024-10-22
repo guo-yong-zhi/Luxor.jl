@@ -151,7 +151,7 @@ If you want to obtain the paths and coordinates for use elsewhere, you can use t
 placeeps("/tmp/linux.eps", log=true)
 
 # start EPS import
-gsave()
+@layer begin
 setgray(1.0)
 move(Point(70.801, -6.0))
 line(Point(429.199, -6.0))
@@ -253,12 +253,12 @@ tw = pagetiles.tilewidth/2
 for (pos, n) in pagetiles
     circle(pos, tw, :stroke)
     circle(pos, tw, :clip)
-    gsave()
+    @layer begin
     translate(pos)
     scale(.95, .95)
     rotate(rand(0.0:π/8:2π))
     placeimage(image, O, centered=true)
-    grestore()
+    end
     clipreset()
 end
 
@@ -277,12 +277,12 @@ img = readpng(dirname(dirname(pathof(Luxor))) * "/docs/src/assets/figures/textou
 w = img.width
 h = img.height
 for θ in 0:π/6:2π-π/6
-    gsave()
+    @layer begin
     scale(.4, .4)
     rotate(θ)
     translate(300, 0)
     placeimage(img, -w/2, -h/2, 0.9)
-    grestore()
+    end
 end
 finish() # hide
 nothing # hide

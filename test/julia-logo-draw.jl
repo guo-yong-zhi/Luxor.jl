@@ -5,34 +5,34 @@ using Luxor, Colors, Test, Random
 Random.seed!(42)
 
 function spirals()
-    gsave()
+    @layer begin
     scale(0.3)
     r = 200
     setcolor("gray")
     for i = 0:pi/8:2pi
-        gsave()
+        @layer begin
         translate(r * cos(i), r * sin(i))
         rotate(i)
         julialogo()
-        grestore()
+        end
     end
-    grestore()
+    end
     juliacircles(20)
 end
 
 function expandingspirals()
-    gsave()
+    @layer begin
     scale(0.3)
     r = 200
     for i = pi:pi/12:6pi
-        gsave()
+        @layer begin
         translate(i / 3 * r * cos(i), i / 3 * r * sin(i))
         scale(0.8)
         rotate(i)
         julialogo()
-        grestore()
+        end
     end
-    grestore()
+    end
 end
 
 function dropshadow()
@@ -43,7 +43,7 @@ function dropshadow()
         stop = colorant"gray60",
         length = steps,
     )
-    gsave()
+    @layer begin
     r = 200
     sethue("purple")
     rect(O, 5, 10, :stroke)
@@ -53,25 +53,25 @@ function dropshadow()
         julialogo(bodycolor = gramp[i], color = false)
     end
     julialogo()
-    grestore()
+    end
 end
 
 function colorgrid()
     #cols = colormap("RdBu", 5; mid=0.5, logscale=false)
     #cols = sequential_palette(rand(10:360), 5, b=0.1)
     cols = distinguishable_colors(25)
-    gsave()
+    @layer begin
 
     pagetiles = Tiler(500, 400, 5, 5)
     for (pos, n) in pagetiles
-        gsave()
+        @layer begin
         setcolor(color(cols[n]))
         translate(pos)
         scale(0.3)
         julialogo(color = false)
-        grestore()
+        end
     end
-    grestore()
+    end
 end
 
 function boxes_and_rectangles(pt::Point)

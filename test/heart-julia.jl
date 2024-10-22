@@ -12,7 +12,7 @@ Random.seed!(42)
 
 function background_text(str_array)
     colorband = diverging_palette(0, 10, 100)
-    gsave()
+    @layer begin
     setopacity(0.5)
     x = -currentwidth / 2
     y = -currentheight / 2
@@ -28,7 +28,7 @@ function background_text(str_array)
             y += 10
         end
     end
-    grestore()
+    end
 end
 
 function heart()
@@ -49,7 +49,7 @@ function heart()
 end
 
 function heart_with_julias(x = 0, y = 0)
-    gsave()
+    @layer begin
     translate(x, y)
     setcolor("lavenderblush")
     heart()
@@ -57,23 +57,23 @@ function heart_with_julias(x = 0, y = 0)
     clip()
     translate(-50, -300)
     for y in 0:30:500
-        gsave()
+        @layer begin
         for x in 0:30:250
             translate(30, 0)
-            gsave()
+            @layer begin
             scale(0.1, 0.1)
             julialogo()
-            grestore()
+            end
         end
-        grestore()
+        end
         translate(0, 20)
     end
     clipreset()
-    grestore()
+    end
 end
 
 function outlined_heart()
-    gsave()
+    @layer begin
     scale(1.2, 1.2)
     translate(-127, -30) # must fix that x-offset one day
     heart_with_julias()
@@ -81,7 +81,7 @@ function outlined_heart()
     setline(4)
     setcolor(1, 0, 0)
     strokepath()
-    grestore()
+    end
 end
 
 function julia_heart(fname)

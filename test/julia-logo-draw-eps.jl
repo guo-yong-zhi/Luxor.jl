@@ -8,40 +8,40 @@ using Random
 Random.seed!(42)
 
 function spiral_logo_eps()
-    gsave()
+    @layer begin
     scale(.3, .3)
     r = 200
     setcolor("gray")
     for i in 0:pi/8:2pi
-        gsave()
+        @layer begin
         translate(r * cos(i), r * sin(i))
         rotate(i)
         julialogo()
-        grestore()
+        end
     end
-    grestore()
+    end
 end
 
 function expandingspiral_eps()
-    gsave()
+    @layer begin
     scale(.3, .3)
     r = 200
     for i in pi:pi/12:6pi
-        gsave()
+        @layer begin
         translate(i/3 * r * cos(i), i/3 * r * sin(i))
         scale(0.8, 0.8)
         rotate(i)
         julialogo()
-        grestore()
+        end
     end
-    grestore()
+    end
 end
 
 function dropshadow_eps()
     steps=20
     # white-gray ramp
     gramp = range(colorant"white", stop=colorant"gray60", length=steps)
-    gsave()
+    @layer begin
     r = 200
     setopacity(0.1)
     for i in 1:steps
@@ -50,26 +50,26 @@ function dropshadow_eps()
         julialogo(color=false)
     end
     julialogo()
-    grestore()
+    end
 end
 
 function colorgrid_eps()
     #cols = colormap("RdBu", 5; mid=0.5, logscale=false)
     #cols = sequential_palette(rand(10:360), 5, b=0.1)
     cols = distinguishable_colors(25)
-    gsave()
+    @layer begin
     c = 0
     for row in 100:100:500
         for column in 100:100:500
-            gsave()
+            @layer begin
             setcolor(color(cols[c+=1]))
             translate(row, column)
             scale(0.3, 0.3)
             julialogo(color=false)
-            grestore()
+            end
         end
     end
-    grestore()
+    end
 end
 
 function draw_logo(fname)

@@ -16,7 +16,7 @@ function get_png_files()
 end
 
 function addimagetile(imgfile, xcenter, ycenter, tilewidth, tileheight; cropping=true)
-    gsave()
+    @layer begin
     box(xcenter, ycenter, tilewidth, tileheight, :clip)
     img = readpng(imgfile)
     w = img.width
@@ -40,7 +40,7 @@ function addimagetile(imgfile, xcenter, ycenter, tilewidth, tileheight; cropping
     scale(scalefactor, scalefactor)
     placeimage(img, O, centered=true)
     clipreset()
-    grestore()
+    end
 end
 
 

@@ -57,14 +57,14 @@ This example uses the built-in function that draws the Julia logo. The `clip` ac
 ```julia
 function draw(x, y)
     foregroundcolors = Colors.diverging_palette(rand(0:360), rand(0:360), 200, s = 0.99, b=0.8)
-    gsave()
+    @layer begin
     translate(x-100, y)
     julialogo(action=:clip)
     for i in 1:500
         sethue(foregroundcolors[rand(1:end)])
         circle(rand(-50:350), rand(0:300), 15, :fill)
     end
-    grestore()
+    end
 end
 
 currentwidth = 500 # pts

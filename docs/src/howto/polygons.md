@@ -130,15 +130,15 @@ tile1, tile2 = collect(tiles)
 
 randompoints = [Point(rand(-100:100), rand(-100:100)) for i in 1:10]
 
-gsave()
+@layer begin
 translate(tile1[1])
 poly(randompoints, action = :stroke)
-grestore()
+end
 
-gsave()
+@layer begin
 translate(tile2[1])
 poly(randompoints, action = :fill)
-grestore()
+end
 
 finish() # hide
 nothing # hide
@@ -750,10 +750,10 @@ setline(0.5) # hide
 for (n, pgon) in enumerate(plist)
     randomhue()
     prettypoly(pgon, action = :stroke, close=true)
-    gsave()
+    @layer begin
     translate(0, 100)
     poly(polysortbyangle(pgon, polycentroid(pgon)), action = :stroke, close=true)
-    grestore()
+    end
 end
 finish() # hide
 nothing # hide
