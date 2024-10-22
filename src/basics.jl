@@ -7,12 +7,12 @@ Reset the current position, scale, and orientation, and then set the 0/0 origin 
 You can refer to the 0/0 point as `O`. (O = `Point(0, 0)`),
 """
 function origin(; drawing=_get_current_drawing_save())
-    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
-    Cairo.translate(drawing.cr, _current_width() / 2.0, _current_height() / 2.0)
+    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]; drawing=drawing)
+    Cairo.translate(drawing.cr, drawing.width / 2.0, drawing.height / 2.0)
 end
 
 function origin(x, y; drawing=_get_current_drawing_save())
-    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]; drawing=drawing)
     Cairo.translate(drawing.cr, x, y)
 end
 
@@ -22,7 +22,7 @@ end
 Reset the current position, scale, and orientation, then move the `0/0` position to `pt`.
 """
 function origin(pt; drawing=_get_current_drawing_save())
-    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+    setmatrix([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]; drawing=drawing)
     Cairo.translate(drawing.cr, pt.x, pt.y)
 end
 
@@ -622,7 +622,7 @@ Rotate the current workspace by `a` radians clockwise (from positive x-axis to p
 
 Values are relative to the current orientation.
 """
-rotate(a) = Cairo.rotate(_get_current_cr(), a)
+rotate(a; drawing=_get_current_drawing_save()) = Cairo.rotate(drawing.cr, a)
 
 """
     translate(point)
@@ -632,8 +632,8 @@ Translate the current workspace to `x` and `y` or to `pt`.
 
 Values are relative to the current location.
 """
-translate(tx::Real, ty::Real) = Cairo.translate(_get_current_cr(), tx, ty)
-translate(pt::Point) = translate(pt.x, pt.y)
+translate(tx::Real, ty::Real; drawing=_get_current_drawing_save()) = Cairo.translate(drawing.cr, tx, ty)
+translate(pt::Point; kwargs...) = translate(pt.x, pt.y; kwargs...)
 
 """
     getpath()

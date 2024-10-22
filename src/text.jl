@@ -99,8 +99,8 @@ function text(t::T where {T<:AbstractString}, pt::Point; drawing=_get_current_dr
     finalpt = rotatepoint(Point(textpointx, textpointy), pt, angle)
 
     @layer begin
-    translate(finalpt)
-    rotate(angle)
+    translate(finalpt; drawing=drawing)
+    rotate(angle; drawing=drawing)
     newpath()
     Cairo.show_text(drawing.cr, t)
     end

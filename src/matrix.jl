@@ -94,7 +94,7 @@ Change the current matrix to 6-element matrix `m`.
 
 See `getmatrix()` for details.
 """
-function setmatrix(m::Array)
+function setmatrix(m::Array; drawing=_get_current_drawing_save())
     if eltype(m) != Float64
         m = map(Float64, m)
     end
@@ -105,7 +105,7 @@ function setmatrix(m::Array)
         throw("didn't like that matrix $m: too many zeroes")
     else
         cm = Cairo.CairoMatrix(m[1], m[2], m[3], m[4], m[5], m[6])
-        Cairo.set_matrix(_get_current_cr(), cm)
+        Cairo.set_matrix(drawing.cr, cm)
     end
 end
 
