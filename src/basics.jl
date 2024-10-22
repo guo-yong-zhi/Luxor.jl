@@ -608,7 +608,7 @@ function layer(func)
 end
 
 macro layer(a)
-    layer(()->$(esc(a)))
+    :(layer(()->$(esc(a))))
 end
 
 """
